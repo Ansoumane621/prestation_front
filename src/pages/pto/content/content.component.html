@@ -1,0 +1,92 @@
+<div class="p-4 sm:p-6 bg-backgroundLight dark:bg-gray-800 rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold  dark:text-white mb-4 transition-colors duration-300">
+    📄 Liste des demandes de retraite reçues
+  </h2>
+  <div *ngIf="isLoading" role="status" class="space-y-4 animate-pulse max-w-full">
+  <div class="h-8 bg-gray-200 rounded dark:bg-gray-700 w-1/3 mb-4"></div>
+  
+  <!-- Skeleton lignes table -->
+  <div *ngFor="let i of [1,2,3,4,5]" class="flex space-x-4">
+    <div class="h-8 bg-gray-200 rounded dark:bg-gray-700 flex-1"></div>
+    <div class="h-8 bg-gray-200 rounded dark:bg-gray-700 flex-1"></div>
+    <div class="h-8 bg-gray-200 rounded dark:bg-gray-700 flex-1"></div>
+    <div class="h-8 bg-gray-200 rounded dark:bg-gray-700 flex-1"></div>
+    <div class="h-8 bg-gray-200 rounded dark:bg-gray-700 flex-1"></div>
+  </div>
+  
+  <span class="sr-only">Loading...</span>
+</div>
+
+
+  <div *ngIf="!isLoading" class="relative overflow-x-auto">
+    <table class="w-full text-sm text-left  dark:text-gray-300">
+      <thead
+        class="text-xs uppercase bg-neutral-100 text-neutral-900 dark:bg-gray-700 dark:text-gray-200 transition-colors duration-300">
+        <tr>
+          <th class="px-4 py-3">Nom</th>
+          <th class="px-4 py-3">Prenom</th>
+          <th class="px-4 py-3">Telephone</th>
+          <th class="px-4 py-3">Date de demande</th>
+          <th class="px-4 py-3">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+            <!-- Si le tableau est vide -->
+    <tr *ngIf="demandesAffichees.length === 0">
+      <td colspan="5" class="px-4 py-3 text-center text-xl text-gray-500">
+        Aucun enregistrement trouvé.
+      </td>
+    </tr>
+
+        <tr *ngFor="let demande of demandesAffichees"
+          class="bg-backgroundLight border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+          <td class="px-4 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ demande.employe.last_name }}</td>
+          <td class="px-4 py-3">{{ demande.employe.first_name}}</td>
+          <td class="px-4 py-3">{{ demande.employe.phone_number}}</td>
+          <td class="px-4 py-3">{{ demande.employe.createdAt | date:'mm-dd-yyyy'}}</td>
+          <td class="px-4 py-3 space-x-2">
+            <!-- (click)="voirDocuments(demande)" -->
+            <a type="button" (click)="goToDocuments(demande)"
+              class="inline-flex items-center px-3 py-1 mb-1 text-sm font-medium text-emerald-500 border border-emerald-500 rounded hover:bg-emerald-100 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/30">
+              📁 Documents
+            </a>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Flowbite style -->
+  <div *ngIf="!isLoading" class="flex justify-end mt-4">
+    <nav>
+      <ul class="inline-flex items-center -space-x-px text-sm">
+        <li>
+          <button (click)="page > 1 && changePage(page - 1)" [disabled]="page === 1"
+            class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-backgroundLight border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
+            Précédent
+          </button>
+        </li>
+
+        <li *ngFor="let p of totalPagesArray">
+          <button (click)="changePage(p)" [class.bg-blue-100]="page === p" [class.dark\:bg-blue-900]="page === p"
+            class="px-3 py-2 leading-tight text-gray-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
+            {{ p }}
+          </button>
+        </li>
+
+        <li>
+          <button (click)="page < totalPages && changePage(page + 1)" [disabled]="page === totalPages"
+            class="px-3 py-2 leading-tight text-gray-500 bg-backgroundLight border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
+            Suivant
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+
+

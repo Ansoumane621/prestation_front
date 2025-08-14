@@ -1,0 +1,381 @@
+<div class="max-w-4xl mx-auto">
+  <!-- Carte titre Mon Compte -->
+  <div
+    class="bg-backgroundLight dark:bg-gray-900 shadow-md rounded-md p-2 mb-2"
+  >
+    <h1 class="text-xl font-extrabold">Mon Compte</h1>
+
+  </div>
+
+  <!-- Conteneur des onglets -->
+  <div class="bg-backgroundLight dark:bg-gray-900 rounded-xl shadow-lg p-2 border border-gray-200 dark:border-gray-700">
+    <!-- Onglets -->
+    <nav class="flex border-b border-gray-300 dark:border-gray-700 mb-4">
+      <button
+        (click)="activeTab = 'infos'"
+        [class.border-b-4]="activeTab === 'infos'"
+        [class.border-[#0E9F6E]]="activeTab === 'infos'"
+        [class.text-[#0E9F6E]]="activeTab === 'infos'"
+        class="px-6 py-3 text-lg hover:text-[#0E9F6E]  transition"
+      >
+        Mes informations
+      </button>
+      <button
+        (click)="activeTab = 'mdp'"
+        [class.border-b-4]="activeTab === 'mdp'"
+        [class.border-[#0E9F6E]]="activeTab === 'mdp'"
+        [class.text-[#0E9F6E]]="activeTab === 'mdp'"
+        class="px-6 py-3 text-lg hover:text-[#0E9F6E]  transition"
+      >
+        Changer mot de passe
+      </button>
+    </nav>
+
+    <!-- Contenu onglet infos -->
+    <form
+      *ngIf="activeTab === 'infos'"
+      [formGroup]="infosForm"
+      (ngSubmit)="saveInfos()"
+      class="space-y-8"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Nom -->
+        <div>
+          <label
+            for="nom"
+            class="block mb-2"
+            >Nom complet</label
+          >
+          <input
+  id="nom"
+  type="text"
+  formControlName="nom"
+  placeholder="Votre nom complet"
+  class="w-full rounded-md border border-gray-300 dark:border-gray-700 p-2
+         text-gray-900 dark:text-gray-100
+         placeholder-gray-400 dark:placeholder-gray-500
+         focus:outline-none focus:ring-2 focus:ring-[#0E9F6E]"
+/>
+
+          <p
+            *ngIf="infosForm.get('nom')?.touched && infosForm.get('nom')?.invalid"
+            class="text-red-500 text-sm mt-1"
+          >
+            Le nom est requis.
+          </p>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label
+            for="email"
+            class="block mb-2"
+            >Email</label
+          >
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Votre adresse email"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-700 p-2
+         text-gray-900 dark:text-gray-100
+         placeholder-gray-400 dark:placeholder-gray-500
+         focus:outline-none focus:ring-2 focus:ring-[#0E9F6E]"
+          />
+          <p
+            *ngIf="infosForm.get('email')?.touched && infosForm.get('email')?.invalid"
+            class="text-red-500 text-sm mt-1"
+          >
+            Email valide requis.
+          </p>
+        </div>
+
+        <!-- Téléphone -->
+        <div>
+          <label
+            for="telephone"
+            class="block mb-2"
+            >Téléphone</label
+          >
+          <input
+            id="telephone"
+            type="text"
+            formControlName="telephone"
+            placeholder="Votre numéro de téléphone"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-700 p-2
+         text-gray-900 dark:text-gray-100
+         placeholder-gray-400 dark:placeholder-gray-500
+         focus:outline-none focus:ring-2 focus:ring-[#0E9F6E]"
+          />
+          <p
+            *ngIf="
+              infosForm.get('telephone')?.touched && infosForm.get('telephone')?.invalid
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Le téléphone est requis.
+          </p>
+        </div>
+
+        <!-- Rôle (readonly) -->
+        <div>
+          <label
+            class="block mb-2"
+            >Email</label
+          >
+          <input
+            type="text"
+            [value]="infosForm.get('role')?.value"
+            disabled
+            class="w-full rounded-md border border-gray-300 dark:border-gray-700 p-2
+         text-gray-900 dark:text-gray-100
+         placeholder-gray-400 dark:placeholder-gray-500
+         focus:outline-none focus:ring-2 focus:ring-[#0E9F6E]"
+          />
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+        <button
+          type="submit"
+          [disabled]="infosForm.invalid"
+          class="bg-[#0E9F6E] hover:bg-[#0C8F5B] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-7 py-3 rounded-md transition"
+        >
+          Sauvegarder
+        </button>
+      </div>
+    </form>
+
+    <!-- Contenu onglet changer mot de passe -->
+    <form
+  *ngIf="activeTab === 'mdp'"
+  [formGroup]="mdpForm"
+  (ngSubmit)="changerMotDePasse()"
+  class="space-y-8"
+>
+  <!-- Ancien mot de passe -->
+  <div>
+    <label
+      for="ancien"
+      class="block mb-2"
+      >Ancien mot de passe</label
+    >
+    <div class="relative">
+      <input
+        id="ancien"
+        [type]="showAncien ? 'text' : 'password'"
+        formControlName="ancien"
+        placeholder="Votre ancien mot de passe"
+        class="w-full rounded-md border dark:border-gray-700 p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#0E9F6E]"
+      />
+      <button
+        type="button"
+        (click)="showAncien = !showAncien"
+        class="absolute inset-y-0 right-3 flex items-center hover:text-[#0E9F6E]"
+        tabindex="-1"
+        aria-label="Afficher ou masquer l'ancien mot de passe"
+      >
+        <svg
+          *ngIf="!showAncien"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        <svg
+          *ngIf="showAncien"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          stroke="none"
+        >
+          <path
+            d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7zM12 15a3 3 0 110-6 3 3 0 010 6z"
+          />
+        </svg>
+      </button>
+    </div>
+    <p
+      *ngIf="mdpForm.get('ancien')?.touched && mdpForm.get('ancien')?.invalid"
+      class="text-red-500 text-sm mt-1"
+    >
+      Ancien mot de passe requis.
+    </p>
+  </div>
+
+  <!-- Nouveau mot de passe -->
+  <div>
+    <label
+      for="nouveau"
+      class="block mb-2"
+      >Nouveau mot de passe</label
+    >
+    <div class="relative">
+      <input
+        id="nouveau"
+        [type]="showNouveau ? 'text' : 'password'"
+        formControlName="nouveau"
+        placeholder="Votre nouveau mot de passe"
+        class="w-full rounded-md border border-gray-300 dark:border-gray-700 p-2 pr-10 bg-backgroundLight focus:outline-none focus:ring-2 focus:ring-[#0E9F6E]"
+      />
+      <button
+        type="button"
+        (click)="showNouveau = !showNouveau"
+        class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-[#0E9F6E]"
+        tabindex="-1"
+        aria-label="Afficher ou masquer le nouveau mot de passe"
+      >
+        <svg
+          *ngIf="!showNouveau"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        <svg
+          *ngIf="showNouveau"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          stroke="none"
+        >
+          <path
+            d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7zM12 15a3 3 0 110-6 3 3 0 010 6z"
+          />
+        </svg>
+      </button>
+    </div>
+    <p
+      *ngIf="
+        mdpForm.get('nouveau')?.touched && mdpForm.get('nouveau')?.errors?.['required']
+      "
+      class="text-red-500 text-sm mt-1"
+    >
+      Nouveau mot de passe requis.
+    </p>
+    <p
+      *ngIf="
+        mdpForm.get('nouveau')?.touched && mdpForm.get('nouveau')?.errors?.['minlength']
+      "
+      class="text-red-500 text-sm mt-1"
+    >
+      Minimum 6 caractères.
+    </p>
+  </div>
+
+  <!-- Confirmation -->
+  <div>
+    <label
+      for="confirmation"
+      class="block mb-2   dark:text-gray-300"
+      >Confirmer nouveau mot de passe</label
+    >
+    <div class="relative">
+      <input
+        id="confirmation"
+        [type]="showConfirmation ? 'text' : 'password'"
+        formControlName="confirmation"
+        placeholder="Confirmez votre nouveau mot de passe"
+        class="w-full rounded-md border border-gray-300 dark:border-gray-700 p-2 pr-10 bg-backgroundLight dark:bg-gray-800  dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#0E9F6E]"
+      />
+      <button
+        type="button"
+        (click)="showConfirmation = !showConfirmation"
+        class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-[#0E9F6E]"
+        tabindex="-1"
+        aria-label="Afficher ou masquer la confirmation du mot de passe"
+      >
+        <svg
+          *ngIf="!showConfirmation"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        <svg
+          *ngIf="showConfirmation"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          stroke="none"
+        >
+          <path
+            d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7zM12 15a3 3 0 110-6 3 3 0 010 6z"
+          />
+        </svg>
+      </button>
+    </div>
+    <p
+      *ngIf="
+        mdpForm.get('confirmation')?.touched && mdpForm.get('confirmation')?.invalid
+      "
+      class="text-red-500 text-sm mt-1"
+    >
+      Confirmation requise.
+    </p>
+    <p
+      *ngIf="
+        mdpForm.errors?.['passwordMismatch'] &&
+        mdpForm.get('confirmation')?.touched
+      "
+      class="text-red-500 text-sm mt-1"
+    >
+      Les mots de passe ne correspondent pas.
+    </p>
+  </div>
+
+  <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+    <button
+      type="submit"
+      [disabled]="mdpForm.invalid"
+      class="bg-[#0E9F6E] hover:bg-[#0C8F5B] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-7 py-3 rounded-md transition"
+    >
+      Modifier mot de passe
+    </button>
+  </div>
+</form>
+
+  </div>
+</div>

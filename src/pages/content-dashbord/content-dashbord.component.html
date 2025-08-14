@@ -1,0 +1,17 @@
+ <!-- ✅ Cartes : responsive -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <app-card-dashbord [titre]="retraite" [nombre]="retraite_nb"></app-card-dashbord>
+      <app-card-dashbord [titre]="reversion" [nombre]="reversion_nb"></app-card-dashbord>
+      <app-card-dashbord [titre]="pto" [nombre]="pto_nb"></app-card-dashbord>
+      <app-card-dashbord [titre]="pi" [nombre]="pi_nb"></app-card-dashbord>
+    </div>
+
+    <!-- ✅ Graphes : responsive -->
+    <div class="grid  grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="flex shadow-lg items-center justify-center rounded-sm bg-backgroundLight min-h-[250px] dark:bg-gray-800">
+        <app-graphe-1></app-graphe-1>
+      </div>
+      <div class="flex shadow-lg items-center justify-center rounded-sm bg-backgroundLight min-h-[250px] dark:bg-gray-800">
+        <app-graphe-2></app-graphe-2>
+      </div>
+    </div>

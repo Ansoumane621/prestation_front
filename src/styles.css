@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+
+
+
+/* styles.css */
+
+@import "tailwindcss";
+@import "tailwindcss/utilities";
+@import "flowbite";
+
+/* Appliquer une couleur de fond claire par défaut avec Tailwind */
+html {
+  @apply bg-white text-black;
+}
+
+
+html.dark {
+  @apply bg-gray-900 text-white;
+}
+
+/* Corps du document */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', Courier, monospace;
+   user-select: none;       /* Désactive la sélection */
+  -webkit-user-select: none;
+}
+
+/* Lien actif personnalisé */
+.active-link {
+  @apply text-[#0E9F6E];
+}
+

@@ -1,0 +1,18 @@
+/* .fixed{
+    background-color: #ffffff !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+} */
+.fixed {
+  @apply bg-backgroundLight rounded-t-lg;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+html.dark .fixed {
+  @apply bg-gray-800; /* Couleur foncée en dark mode */
+}
+
+.fixed {
+  @apply transition-colors duration-300;
+}

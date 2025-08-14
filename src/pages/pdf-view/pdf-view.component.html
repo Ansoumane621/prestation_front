@@ -1,0 +1,24 @@
+<div *ngFor="let pdf of pdfList; let i = index" class="mb-8 h-screen overflow-y-scroll scrollbar-hide bg-white dark:bg-gray-900 transition-colors duration-300 rounded-lg shadow">
+  
+  <pdf-viewer
+    [src]="pdf"
+    [render-text]="true"
+    [original-size]="false"
+    [zoom]="zoomLevels[i]"
+    style="display: block; height: 100vh; width: 100%;"
+  ></pdf-viewer>
+
+  <div class="flex justify-center mt-2 space-x-4">
+    <button
+      (click)="zoomOut(i)"
+      class="px-4 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded transition-colors duration-300"
+    >−</button>
+    
+    <span class="text-gray-800 dark:text-white">{{ zoomLevels[i].toFixed(1) }}x</span>
+    
+    <button
+      (click)="zoomIn(i)"
+      class="px-4 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded transition-colors duration-300"
+    >+</button>
+  </div>
+</div>
