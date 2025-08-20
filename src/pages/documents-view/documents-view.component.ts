@@ -10,8 +10,6 @@ import { PipesComponent } from '../pipes/pipes.component';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RetraiteService } from '../../app/retraite.service';
-import { AfterViewInit } from '@angular/core';
-import { Modal } from 'flowbite';
 
 @Component({
   selector: 'app-documents-view',
@@ -22,16 +20,16 @@ import { Modal } from 'flowbite';
 export class DocumentsViewComponent implements OnInit {
   form: FormGroup;
   accepted: boolean = false;
-  private route = inject(ActivatedRoute);
   private service = inject(RetraiteService);
-  
+  info:any
   constructor(private fb: FormBuilder, private router: Router) {
+    
     const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { phone: string; email: string };
+    const state = navigation?.extras.state as { phone: string; employe: string };
      // Stocker les données dans des propriétés du composant
     if (state) {
       this.phone = state.phone;
-      this.email = state.email;
+      this.employe = state.employe;
     }
     this.form = this.fb.group({
       description: ['', Validators.required],
@@ -56,7 +54,7 @@ export class DocumentsViewComponent implements OnInit {
   pageSize = 5;
   phone!: string;
   isLoading = true;
-  email: string = '';
+  employe: any;
   get totalPages(): number {
     return Math.ceil(this.documents.length / this.pageSize);
   }
@@ -66,7 +64,8 @@ export class DocumentsViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.phone = this.route.snapshot.paramMap.get('phone')!;
+    this.info = localStorage.getItem('userInfo')
+    this.info = JSON.parse(this.info)
     this.service.get_document_by_employe(this.phone).subscribe({
       next: (response: any) => {
         this.documents = response.files;
@@ -90,7 +89,7 @@ export class DocumentsViewComponent implements OnInit {
   annulerdemande() {
     let data = {
       phone:this.phone,
-      email:this.email
+      email:this.employe.email
     }
     
     this.service.rejette_demande(data).subscribe({

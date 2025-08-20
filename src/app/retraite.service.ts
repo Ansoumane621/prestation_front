@@ -19,7 +19,9 @@ export class RetraiteService {
 rejette_demande(data:any):any{
     return this.http.post(`${environment.apiUrl}retraite/annuler_demande`,data)
  }
-
+ faire_liquidation(employeId:string){
+    return this.http.get(`${environment.apiUrl}liquidation/calculer_pension/${employeId}`)
+ }
  
 
 }

@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
+import { AuthServiceService } from '../../../auth/auth-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +16,13 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
   errorMessage = '';
+  isLoading = false;
+  private toastr = inject(ToastrService);
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder,private authservice: AuthServiceService, private router: Router) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(4)]],
+      user_identify: ['', [Validators.required]],
+      user_password: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 
@@ -26,14 +31,42 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    const { email, password } = this.loginForm.value;
 
-    // Authentification simulée
-    if (email == 'admin@gmail.com' && password == '123456') {
-      this.router.navigate(['/dashbord']);
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.authservice.login(this.loginForm.value).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.showError('Erreur serveur', error);
+          console.error('Erreur lors de la connexion :', error);
+        },
+      });
+      // this.router.navigate(['/dashbord']);
     } else {
-      this.errorMessage = 'Identifiants incorrects. Veuillez réessayer.';
+      // Marquez tous les champs comme touchés pour afficher les erreurs
+      this.loginForm.markAllAsTouched();
     }
+  }
+
+    showSuccess(message: string) {
+    this.toastr.success(message, 'Succès', {
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      closeButton: true,
+      progressBar: true
+    });
+  }
+
+  showError(title: string, message: string) {
+    this.toastr.error(message, title, {
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      closeButton: true,
+      progressBar: true
+    });
   }
 
 }

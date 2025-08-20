@@ -1,0 +1,125 @@
+<div class="mx-auto mt-5 mb-6">
+  <div class="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden">
+    
+    <!-- Colonne gauche : Avatar -->
+    <div class="flex items-center justify-center p-6 bg-gray-100 dark:bg-gray-700">
+      <img 
+        src="https://th.bing.com/th/id/R.af693424b4226b78d1ff2ad10c298f71?rik=7lavWJqVaEewtQ&pid=ImgRaw&r=0" 
+        alt="User Avatar" 
+        class="w-32 h-32 rounded-full object-cover shadow-md"
+      >
+    </div>
+
+    <!-- Colonne droite : Infos utilisateur -->
+    <div class="flex-1 p-6">
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+        {{data.employe.first_name }} {{data.employe.last_name }}
+      </h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Employé</p>
+
+      <!-- Infos basiques -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Bloc gauche -->
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Email</label>
+            <p class="text-lg font-semibold text-gray-800 dark:text-white">
+              {{data.employe.email}}
+            </p>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Téléphone</label>
+            <p class="text-lg font-semibold text-gray-800 dark:text-white">
+              {{data.employe.phone_number}}
+            </p>
+          </div>
+        </div>
+
+        <!-- Bloc droit -->
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Identifiant</label>
+            <p class="text-lg font-semibold text-gray-800 dark:text-white">
+              {{data.employe.no_immatriculation}}
+            </p>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Sexe</label>
+            <p class="text-lg font-semibold text-gray-800 dark:text-white">
+              {{data.employe.gender}}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Nouveau bloc : Informations de pension -->
+      <div class="mt-8">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
+          Informations de Pension
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Colonne gauche -->
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Dernière Déclaration</label>
+              <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                Année: {{data['details_calcul'].lastDeclaration.year}} 
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Salaire soumis cotisation</label>
+              <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                {{data['details_calcul'].salaire_soumis_cotisation | number}}
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Ancienneté</label>
+              <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                {{data['details_calcul'].details_anciennete.totalYears}} ans {{data['details_calcul'].details_anciennete.totalMonths}} mois
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Salaire de Référence</label>
+              <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                {{data['details_calcul'].salaire_reference | number}}
+              </p>
+            </div>
+          </div>
+
+          <!-- Colonne droite -->
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Annuités</label>
+              <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                {{data.details_calcul['annuites'] | number:'1.2-2'}}
+                 
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Montant Mensuel</label>
+              <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                {{data['details_calcul'].montant_mensuel| number}}
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Nombre d'enfants</label>
+              <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                {{data['details_calcul'].nombre_enfants}}
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Pension Mensuelle</label>
+              <p class="text-lg font-semibold text-green-600 dark:text-green-400 text-xl">
+                {{data['details_calcul'].montant_pension_mensuelle | number}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

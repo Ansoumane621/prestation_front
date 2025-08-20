@@ -1,7 +1,7 @@
 <nav
   class="bg-backgroundLight shadow-lg mb-4 dark:bg-gray-900 dark:text-white dark:bg-gray-900 fixed w-full z-70 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-
+    
     <a class="flex items-center space-x-3 rtl:space-x-reverse">
       <button (click)="toggle()" type="button"
         class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -14,6 +14,7 @@
       <img src="logo.png" class="h-8" alt="Flowbite Logo">
       <span class="self-center text-2xl  whitespace-nowrap dark:text-white">Prestations</span>
     </a>
+    <div class="text-2xl font-semibold">{{info.type}}</div>
     <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
       <button (click)="toggleTheme()" class="p-2 rounded-full mr-2 bg-gray-200 dark:bg-gray-700">
         <svg *ngIf="!isDarkMode" class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
@@ -26,12 +27,11 @@
         </svg>
       </button>
 
-
       <a routerLink="content_dashbord" type="button"
         class="text-white bg-emerald-500 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Allez
         sur dashbord</a>
       <!-- Bouton Déconnexion -->
-      <button routerLink="/login"
+      <button (click)="logout()"
         class="p-2 rounded-full ml-17 cursor-pointer bg-red-100 hover:bg-red-200 text-red-600 dark:bg-red-800 dark:hover:bg-red-700 dark:text-white transition duration-200"
         title="Se déconnecter">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"

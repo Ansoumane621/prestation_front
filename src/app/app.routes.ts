@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashbordComponent } from '../pages/dashbord/dashbord.component';
+import { AuthGuard } from '../../auth.guard';
 
 export const routes: Routes = [
   // Route indépendante pour login
@@ -21,6 +22,7 @@ export const routes: Routes = [
   // Routes internes avec layout DashbordComponent
   {
     path: 'dashbord',
+    canActivate:[AuthGuard],
     component: DashbordComponent,
     children: [
       {
@@ -41,6 +43,11 @@ export const routes: Routes = [
         path:'documents',
         loadComponent:()=>import('../pages/documents-view/documents-view.component')
         .then((m)=>m.DocumentsViewComponent)
+      },
+      {
+        path:'liquidation/:employeId',
+        loadComponent:()=>import('../pages/liquidation/liquidation')
+        .then((m)=>m.Liquidation)
       },
       {
         path: 'retraite/:value',
