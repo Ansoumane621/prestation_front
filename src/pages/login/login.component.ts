@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import Swal from 'sweetalert2';
 import { AuthServiceService } from '../../../auth/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -19,7 +18,7 @@ export class LoginComponent {
   isLoading = false;
   private toastr = inject(ToastrService);
 
-  constructor(private fb: FormBuilder,private authservice: AuthServiceService, private router: Router) {
+  constructor(private fb: FormBuilder,private authservice: AuthServiceService) {
     this.loginForm = this.fb.group({
       user_identify: ['', [Validators.required]],
       user_password: ['', [Validators.required, Validators.minLength(4)]],
@@ -36,6 +35,7 @@ export class LoginComponent {
       this.isLoading = true;
       this.authservice.login(this.loginForm.value).subscribe({
         next: (response) => {
+          this.showError('Succès', "connexion réçue");
           this.isLoading = false;
         },
         error: (error) => {

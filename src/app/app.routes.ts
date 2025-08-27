@@ -45,7 +45,7 @@ export const routes: Routes = [
         .then((m)=>m.DocumentsViewComponent)
       },
       {
-        path:'liquidation/:employeId',
+        path:'liquidation/:id',
         loadComponent:()=>import('../pages/liquidation/liquidation')
         .then((m)=>m.Liquidation)
       },

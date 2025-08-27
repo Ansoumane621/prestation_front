@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges } from '@angular/core';
 
 import ApexCharts from 'apexcharts'; // tu dois avoir installé apexcharts
 
@@ -8,9 +8,11 @@ import ApexCharts from 'apexcharts'; // tu dois avoir installé apexcharts
   templateUrl: './graphe-1.component.html',
   styleUrl: './graphe-1.component.css'
 })
-export class Graphe1Component  implements AfterViewInit{
+export class Graphe1Component  implements OnChanges{
+   @Input() series: number[] = [];
+  @Input() labels: string[] = [];
 
-  ngAfterViewInit(): void {
+  ngOnChanges(): void {
     const chart = new ApexCharts(
       document.querySelector("#pie-chart"),
       this.getChartOptions()
@@ -20,7 +22,7 @@ export class Graphe1Component  implements AfterViewInit{
 
    getChartOptions() {
     return {
-      series: [52.8, 26.8, 20.4,6],
+      series:this.series,
       colors: ["#1C64F2", "#16BDCA", "#9061F9","#6ab37aff"],
       chart: {
         height: 420,
@@ -38,7 +40,7 @@ export class Graphe1Component  implements AfterViewInit{
           }
         },
       },
-      labels: ["Direct", "Organic search", "Referrals"],
+      labels:this.labels,
       dataLabels: {
         enabled: true,
         style: {

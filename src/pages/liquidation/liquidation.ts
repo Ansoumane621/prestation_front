@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RetraiteService } from '../../app/retraite.service';
-import { DecimalPipe, JsonPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-liquidation',
-  imports: [DecimalPipe],
+  standalone:true,
+  imports: [DecimalPipe,RouterModule],
   templateUrl: './liquidation.html',
   styleUrl: './liquidation.css'
 })
@@ -14,8 +16,9 @@ export class Liquidation implements OnInit{
   data: any;  // contient toute la réponse API
   loading: boolean = false;
   error: string | null = null;
+  id!: string;
 
-  constructor(private liquidationService: RetraiteService) {}
+  constructor(private liquidationService: RetraiteService,private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.getLiquidation();
@@ -24,15 +27,14 @@ export class Liquidation implements OnInit{
   getLiquidation() {
     this.loading = true;
     this.error = null;
-
-    this.liquidationService.faire_liquidation(this.employeId).subscribe({
+    this.id = this.route.snapshot.paramMap.get('id')!;
+    this.liquidationService.faire_liquidation(this.id).subscribe({
       next: (res: any) => {
-        console.log("Réponse API :", res['details_calcul']);
         this.data = res;
         this.loading = false;
       },
       error: (err) => {
-        console.error("Erreur :", err);
+        console.error("Erreur :", err.message);
         this.error = "Impossible de charger la liquidation.";
         this.loading = false;
       }

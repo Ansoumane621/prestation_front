@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-graphe-2',
@@ -6,8 +6,13 @@ import { AfterViewInit, Component } from '@angular/core';
   templateUrl: './graphe-2.component.html',
   styleUrl: './graphe-2.component.css',
 })
-export class Graphe2Component implements AfterViewInit {
-  ngAfterViewInit(): void {
+export class Graphe2Component implements OnChanges {
+
+  @Input() series: number[] = [];
+  @Input() labels: string[] = [];
+
+  
+  ngOnChanges(): void {
     const chart = new ApexCharts(
       document.querySelector('#bar-chart'),
       this.getChartOptions()
@@ -20,7 +25,7 @@ export class Graphe2Component implements AfterViewInit {
       series: [
         {
           name: 'Pourcentage',
-          data: [52.8, 26.8, 20.4,6],
+          data: this.series,
         },
       ],
       chart: {

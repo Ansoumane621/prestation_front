@@ -8,10 +8,10 @@
 
     <!-- ✅ Graphes : responsive -->
     <div class="grid  grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <div class="flex shadow-lg items-center justify-center rounded-sm bg-backgroundLight min-h-[250px] dark:bg-gray-800">
-        <app-graphe-1></app-graphe-1>
+      <div class="flex shadow-lg shadow-gray-400/50 ring-1 ring-gray-300 dark:ring-gray-700 items-center justify-center rounded-sm bg-backgroundLight min-h-[250px] dark:bg-gray-800">
+        <app-graphe-1 [series]="chartSeries" [labels]="chartLabels"></app-graphe-1>
       </div>
-      <div class="flex shadow-lg items-center justify-center rounded-sm bg-backgroundLight min-h-[250px] dark:bg-gray-800">
-        <app-graphe-2></app-graphe-2>
+      <div class="flex shadow-lg ring-1 ring-gray-300 dark:ring-gray-700 items-center justify-center rounded-sm bg-backgroundLight min-h-[250px] dark:bg-gray-800">
+        <app-graphe-2 [series]="chartSeries" [labels]="chartLabels"></app-graphe-2>
       </div>
     </div>

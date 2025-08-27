@@ -27,6 +27,7 @@
           <th class="px-4 py-3">Prenom</th>
           <th class="px-4 py-3">Telephone</th>
           <th class="px-4 py-3">Date de demande</th>
+          <th class="px-4 py-3">Status</th>
           <th class="px-4 py-3">Actions</th>
         </tr>
       </thead>
@@ -45,6 +46,19 @@
           <td class="px-4 py-3">{{ demande.employe.first_name}}</td>
           <td class="px-4 py-3">{{ demande.employe.phone_number}}</td>
           <td class="px-4 py-3">{{ demande.employe.createdAt | date:'mm-dd-yyyy'}}</td>
+          <td class="px-4 py-3">
+  <span *ngIf="demande.verifier"
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+    ✅ Vérifié
+  </span>
+
+  <span *ngIf="!demande.verifier"
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
+    ❌ Non vérifié
+  </span>
+</td>
+
+          <!-- <td class="px-4 py-3">{{ demande.verifier==true?"verifier":"non verifier"}}</td> -->
           <td class="px-4 py-3 space-x-2">
             <!-- (click)="voirDocuments(demande)" -->
             <a type="button" (click)="goToDocuments(demande)"

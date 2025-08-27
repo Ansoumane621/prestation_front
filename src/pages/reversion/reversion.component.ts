@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from "@angular/router";
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
+import { RetraiteService } from '../../app/retraite.service';
 
 @Component({
   selector: 'app-reversion',
@@ -10,28 +11,13 @@ import { RouterModule } from "@angular/router";
 })
 export class ReversionComponent {
 
-   demandes: any[] = [
-  { nom: 'Fatoumata Condé', matricule: 'RET12345', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'saran Diallo', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou keita', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou mouna', matricule: 'RET12346', dateDemande: new Date() },
-  { nom: 'Mamadou bah', matricule: 'RET12346', dateDemande: new Date() },
-  // Ajoute autant que nécessaire...
-];
-
+   demandes: any[] = [];
 demandesAffichees: any[] = [];
+
+
 page = 1;
 pageSize = 5;
+isLoading = true;
 
 get totalPages(): number {
   return Math.ceil(this.demandes.length / this.pageSize);
@@ -41,25 +27,45 @@ get totalPagesArray(): number[] {
   return Array.from({ length: this.totalPages }, (_, i) => i + 1);
 }
 
-ngOnInit() {
-  this.changePage(1);
+private service = inject(RetraiteService)
+private router = inject(Router)
+private route = inject(ActivatedRoute)
+  ngOnInit() {
+  this.isLoading = true;
+
+  this.route.paramMap.subscribe(params => {
+    const retraite = params.get('value'); // récupère "retraite" ou autre depuis l'URL
+    this.service.get_retraite_type(retraite!).subscribe({
+      next: (res: any) => {
+        this.demandes = res;
+        this.changePage();
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+        console.log(error);
+      }
+    });
+  });
 }
 
-changePage(page: number) {
+
+changePage(page: number = 1) {
   this.page = page;
   const start = (page - 1) * this.pageSize;
   const end = start + this.pageSize;
   this.demandesAffichees = this.demandes.slice(start, end);
 }
 
-voirDocuments(demande: any) {
-  console.log("📁 Voir documents pour :", demande);
-  // Affiche dans un modal si tu veux
-}
+goToDocuments(demande: any) {
 
-validerDemande(id: number) {
-  console.log("✅ Demande validée :", id);
-  // Traite ici
+  this.router.navigate([`/dashbord/documents/`], {
+    state: {
+      phone: demande.phone,
+      id:demande.id,
+      employe: demande // deuxième variable
+    }
+  });
 }
 
 }

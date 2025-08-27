@@ -1,11 +1,11 @@
-import { CommonModule, DatePipe, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, JsonPipe, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { RetraiteService } from '../../../app/retraite.service';
 import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-content',
-  imports: [CommonModule,RouterModule,NgIf],
+  imports: [CommonModule,RouterModule],
   templateUrl: './content.component.html',
   styleUrl: './content.component.css'
 })
@@ -38,7 +38,6 @@ private route = inject(ActivatedRoute)
     this.service.get_retraite_type(retraite!).subscribe({
       next: (res: any) => {
         this.demandes = res;
-        console.log(res)
         this.changePage();
         this.isLoading = false;
       },
@@ -63,7 +62,8 @@ goToDocuments(demande: any) {
   this.router.navigate([`/dashbord/documents/`], {
     state: {
       phone: demande.phone,
-      employe: demande// deuxième variable
+      id:demande.id,
+      employe: demande // deuxième variable
     }
   });
 }

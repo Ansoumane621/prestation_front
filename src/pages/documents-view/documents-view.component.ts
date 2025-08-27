@@ -8,12 +8,12 @@ import {
 } from '@angular/forms';
 import { PipesComponent } from '../pipes/pipes.component';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RetraiteService } from '../../app/retraite.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-documents-view',
-  imports: [FormsModule, ReactiveFormsModule, PipesComponent, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, PipesComponent,RouterModule, CommonModule],
   templateUrl: './documents-view.component.html',
   styleUrl: './documents-view.component.css',
 })
@@ -22,14 +22,18 @@ export class DocumentsViewComponent implements OnInit {
   accepted: boolean = false;
   private service = inject(RetraiteService);
   info:any
+  loading = false;
+  id:number = 0
+  private toastr = inject(ToastrService);
   constructor(private fb: FormBuilder, private router: Router) {
     
     const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { phone: string; employe: string };
+    const state = navigation?.extras.state as { phone: string; employe: string ,id:number};
      // Stocker les données dans des propriétés du composant
     if (state) {
       this.phone = state.phone;
       this.employe = state.employe;
+      this.id= state.id;
     }
     this.form = this.fb.group({
       description: ['', Validators.required],
@@ -38,8 +42,7 @@ export class DocumentsViewComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Texte soumis :', this.form.value.description);
-    alert('Formulaire validé ✅');
+    this.router.navigate([`dashbord/liquidation`,this.id]);
   }
   documents = [];
 
@@ -48,12 +51,28 @@ export class DocumentsViewComponent implements OnInit {
   afficherDocument(url: string) {
     this.documentSelectionne = url;
   }
+  onTransfer(){
+    this.loading = true; // active le loader et bloque le bouton
+    this.service.transferer_doc({phone:this.phone}).subscribe({
+      next:(response:any)=>{
+        this.loading = false; // désactive le loader
+        console.log(response)
+        this.showSuccess(response.message)
+      },
+      error:(error:any)=>{
+        this.loading = false; // désactive aussi le loader même en cas d’erreur
+        console.log(error)
+        this.showError('Erreur Serveur',error.message)
+      }
+    })
+  }
 
   demandesAffichees: any[] = [];
   page = 1;
   pageSize = 5;
   phone!: string;
   isLoading = true;
+  loadingReject = false;
   employe: any;
   get totalPages(): number {
     return Math.ceil(this.documents.length / this.pageSize);
@@ -64,6 +83,7 @@ export class DocumentsViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.id= this.employe.employe.id
     this.info = localStorage.getItem('userInfo')
     this.info = JSON.parse(this.info)
     this.service.get_document_by_employe(this.phone).subscribe({
@@ -87,6 +107,7 @@ export class DocumentsViewComponent implements OnInit {
   }
 
   annulerdemande() {
+    this.loadingReject = true; // bouton en mode chargement
     let data = {
       phone:this.phone,
       email:this.employe.email
@@ -94,11 +115,33 @@ export class DocumentsViewComponent implements OnInit {
     
     this.service.rejette_demande(data).subscribe({
       next:(res:any)=>{
+        this.showSuccess(res.message)
         console.log(res)
+        this.loadingReject = false; // désactive le loader
       },
       error:(err:any)=>{
+        this.showError('Erreur serveur', err.message);
         console.log(err)
+        this.loadingReject = false; // désactive aussi en cas d’erreur
       }
     })
+  }
+
+   showSuccess(message: string) {
+    this.toastr.success(message, 'Succès', {
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      closeButton: true,
+      progressBar: true
+    });
+  }
+
+  showError(title: string, message: string) {
+    this.toastr.error(message, title, {
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      closeButton: true,
+      progressBar: true
+    });
   }
 }
