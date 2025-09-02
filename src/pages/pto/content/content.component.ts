@@ -58,10 +58,11 @@ changePage(page: number = 1) {
 }
 
 goToDocuments(demande: any) {
-  this.router.navigate(['/dashbord/documents/'], {
-    state: {
-      phone: demande.phone_number,
-      email: demande.email// deuxième variable
+  this.router.navigate([`/dashbord/documents`], {
+    queryParams: {
+      phone: demande.phone,
+      id: demande.id,
+      employe: JSON.stringify(demande) // si tu veux passer tout l'objet
     }
   });
 }

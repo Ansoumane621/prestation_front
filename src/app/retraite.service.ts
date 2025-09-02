@@ -27,6 +27,9 @@ rejette_demande(data:any):any{
  faire_liquidation(employeId:string){
     return this.http.get(`${environment.apiUrl}liquidation/calculer_pension/${employeId}`)
  }
+ getTop5(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}liquidation/top5`);
+  }
   counter_by_type():Observable<{ type_retraite: string, count: number }[]>{
     return this.http.get<{ type_retraite: string, count: number }[]>(`${environment.apiUrl}retraite/count_by_type_retraite`)
  }

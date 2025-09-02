@@ -35,7 +35,7 @@ export class LoginComponent {
       this.isLoading = true;
       this.authservice.login(this.loginForm.value).subscribe({
         next: (response) => {
-          this.showError('Succès', "connexion réçue");
+          this.showSuccess("connexion réçue");
           this.isLoading = false;
         },
         error: (error) => {

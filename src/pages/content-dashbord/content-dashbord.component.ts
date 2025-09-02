@@ -3,10 +3,11 @@ import { CardDashbordComponent } from "../components/card-dashbord/card-dashbord
 import { Graphe1Component } from "../components/graphe-1/graphe-1.component";
 import { Graphe2Component } from "../components/graphe-2/graphe-2.component";
 import { RetraiteService } from '../../app/retraite.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-content-dashbord',
-  imports: [CardDashbordComponent, Graphe1Component, Graphe2Component],
+  imports: [CardDashbordComponent, Graphe1Component, CommonModule, Graphe2Component],
   templateUrl: './content-dashbord.component.html',
   styleUrl: './content-dashbord.component.css'
 })
@@ -22,6 +23,7 @@ pto_nb: number = 0;
 reversion_nb: number = 0;
 chartSeries: number[] = [];
   chartLabels: string[] = [];
+  dataLoaded: boolean = false; // nouveau
 
 ngOnInit() {
   this.service.counter_by_type().subscribe({
@@ -50,9 +52,8 @@ ngOnInit() {
       // Construire chartSeries & chartLabels à partir des valeurs finales
       this.chartLabels = Object.keys(defaultData);   // ["pi","retraite","pto","reversion"]
       this.chartSeries = Object.values(defaultData); // [valeurs correspondantes]
+      this.dataLoaded = true; // signal que les données sont prêtes
 
-      console.log(this.chartLabels);
-      console.log(this.chartSeries);
     res.forEach(item => {
       switch (item.type_retraite) {
         case "pi":

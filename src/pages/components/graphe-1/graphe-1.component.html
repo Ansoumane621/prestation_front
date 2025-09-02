@@ -1,1 +1,12 @@
-<div id="pie-chart" class="dark:bg-gray-900 dark:text-white"></div>
+
+<apx-chart
+  [series]="chartOptions.series || []"
+  [chart]="chartOptions.chart || { type: 'donut', height: 420, width: '100%' }"
+  [labels]="chartOptions.labels || []"
+  [colors]="chartOptions.colors || ['#1C64F2', '#16BDCA', '#9061F9', '#6ab37aff']"
+  [responsive]="chartOptions.responsive || []"
+  [title]="chartOptions.title!" 
+  >
+</apx-chart>
+
+

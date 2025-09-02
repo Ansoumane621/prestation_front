@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { RetraiteService } from '../../app/retraite.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-documents-view',
   imports: [FormsModule, ReactiveFormsModule, PipesComponent,RouterModule, CommonModule],
@@ -25,16 +26,13 @@ export class DocumentsViewComponent implements OnInit {
   loading = false;
   id:number = 0
   private toastr = inject(ToastrService);
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router,private route: ActivatedRoute) {
     
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { phone: string; employe: string ,id:number};
-     // Stocker les données dans des propriétés du composant
-    if (state) {
-      this.phone = state.phone;
-      this.employe = state.employe;
-      this.id= state.id;
-    }
+  this.route.queryParams.subscribe(params => {
+    this.phone = params['phone'];
+    this.id = params['id'];
+    this.employe = params['employe'] ? JSON.parse(params['employe']) : null;
+  });
     this.form = this.fb.group({
       description: ['', Validators.required],
       conditions: [false],
@@ -56,7 +54,6 @@ export class DocumentsViewComponent implements OnInit {
     this.service.transferer_doc({phone:this.phone}).subscribe({
       next:(response:any)=>{
         this.loading = false; // désactive le loader
-        console.log(response)
         this.showSuccess(response.message)
       },
       error:(error:any)=>{

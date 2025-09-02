@@ -12,7 +12,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 })
 export class Liquidation implements OnInit{
 
-   employeId: string = "98721"; // tu peux la passer dynamiquement
   data: any;  // contient toute la réponse API
   loading: boolean = false;
   error: string | null = null;

@@ -1,1 +1,16 @@
-<div id="bar-chart" class="dark:bg-gray-900 dark:text-white"></div>
+<apx-chart  *ngIf="dataLoaded"
+  [series]="series"   
+  [chart]="chart"
+  [xaxis]="xaxis"
+  [yaxis]="yaxis"
+  [stroke]="stroke"
+  [tooltip]="tooltip"
+  [legend]="legend"
+  [title]="title"
+></apx-chart>
+
+
+
+
+
+
